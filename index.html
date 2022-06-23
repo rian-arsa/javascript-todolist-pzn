@@ -54,28 +54,54 @@
             }
         }
 
+        function removeTodolist(index) {
+            todolist.splice(index, 1)
+            console.log(index);
+            displayTodolist();
+        }
+
+        function addTodolist(index, todo) {
+            const tr = document.createElement("tr");
+            const tdButton = document.createElement("td");
+            tr.appendChild(tdButton);
+
+            const buttonDone = document.createElement("input");
+            buttonDone.value = "Done";
+            buttonDone.type = "button";
+            buttonDone.onclick = function(){
+                removeTodolist(index)
+            }
+            tdButton.appendChild(buttonDone);
+
+
+            const tdTodo = document.createElement("td");
+            tdTodo.textContent = todo;
+            tr.appendChild(tdTodo);
+
+            const todolistBody = document.getElementById("todolist");
+            todolistBody.appendChild(tr);
+        }
+
         function displayTodolist() {
             clearTodolist()
 
-            for (let index = 0; index < todolist.length; index++) {
-                const todo = todolist[index];
+            for (let i = 0; i < todolist.length; i++) {
+                const todo = todolist[i];
+
+                const searchText = document.getElementById("search").value.toLowerCase();
+                console.log(searchText);
+
+                if(todo.toLowerCase().includes(searchText)){
+                    addTodolist(i, todo);
+                }
+            }
+        }
+
+        function renderTodolist() {
+            clearTodolist()
+            for (let i = 0; i < todolist.length; i++) {
+               
                 
-                const tr = document.createElement("tr");
-                const tdButton = document.createElement("td");
-                tr.appendChild(tdButton);
-
-                const buttonDone = document.createElement("input");
-                buttonDone.value = "Done";
-                buttonDone.type = "button";
-                tdButton.appendChild(buttonDone);
-
-
-                const tdTodo = document.createElement("td");
-                tdTodo.textContent = todo;
-                tr.appendChild(tdTodo);
-
-                const todolistBody = document.getElementById("todolist");
-                todolistBody.appendChild(tr);
             }
         }
 
@@ -87,11 +113,21 @@
 
             document.forms['todoForm'].reset();
 
-            console.log(todolist);
+            // console.log(todolist);
             displayTodolist();
             
         }
 
+        const searchField = document.getElementById("search");
+        searchField.onkeydown = function () {
+            console.log("down");
+            displayTodolist();
+        }
+        searchField.onkeyup  = function () {
+            console.log("up");
+            displayTodolist();
+        }
+        
         displayTodolist();
     </script>
 </body>
